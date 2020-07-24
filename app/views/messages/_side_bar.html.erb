@@ -1,6 +1,8 @@
 <div class="side-bar-header">
   <div class="header-name">
-    <a href="#">Tom</a>
+    <%= link_to edit_user_path(current_user) do %>
+      <%= current_user.name %>
+    <% end %>
   </div>
   <div class="create-room">
     <a href="#">チャットを作成する</a>
@@ -19,3 +21,12 @@
     </div>
   </div>
 </div>
+
+
+<%# 「rails routes」コマンドを実行し、どのようなリンク先を指定すれば、該当のアクションが動くのか確認しましょう。
+ユーザーの編集機能へのリンクは、以下が該当するのがわかります。
+Prefix	HTTPメソッド	URI	Controller#Action
+edit_user	GET	/users/:id/edit(.:format)	users#edit
+link_toのパスを、ログインしているユーザーの編集をするため 、edit_user_path(current_user)と指定します。
+current_user.nameは、ログインしているユーザー名です。
+ユーザー名をクリックすると、usersコントローラーのeditアクションが実行され、編集ページに遷移できます。 %>
