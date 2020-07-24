@@ -16,6 +16,13 @@
         <label class='chat-room-form__label' for='chat_room_チャットメンバー'>チャットメンバー</label>
       </div>
       <div class='chat-room-form__field--right'>
+        <select name="room[user_ids][]">
+          <option value="">チャットするユーザーを選択してください</option>
+            <% User.all.where.not(id: current_user.id).each do |user| %>
+              <option value=<%=user.id%>><%= user.name %></option>
+          <% end %>
+        </select>
+        <input name="room[user_ids][]" type="hidden" value=<%=current_user.id%>>
       </div>
     </div>
     <div class='chat-room-form__field'>
@@ -26,3 +33,30 @@
     </div>
   <% end %>
 </div>
+
+
+<%# select要素とは、プルダウンのようなセレクトボックスを作成するための要素です。
+select要素のname属性に任意の値を指定することで、paramsを通して、その値をコントローラーへ渡すことができます。 %>
+
+<%# option要素
+select要素の中でoption要素を記述することで、プルダウンの選択肢になる要素です。
+<select>
+  <option>りんご</option>
+  <option>オレンジ</option>
+  <option>ぶどう</option>
+</select> %>
+
+<%# モデル名.where("条件")と記述することで条件に一致したレコードを配列として取得できます。
+この記述にnotを追記したモデル名.where.not("条件")は、条件に一致したレコード以外の値を配列として取得できます。 %>
+
+<%# select要素のname属性にroom[user_ids][]を指定し、option要素のvalue属性にuser.idを指定しました。
+このように記述することで、room[user_ids][]をキーに「user.id」をコントローラー側へ送信できます。
+コントローラーに送られるparamsは以下のようになります。
+{"room[user_ids][]" => "選択したユーザーのid"} %>
+
+<%# type="hidden"とtype属性を指定することで、画面上には表示されないinput要素を作成できます。
+そして、先ほどのselect要素とoption要素同様に、name属性にroom[user_ids][]を指定し、value属性にcurrent_user.idを指定することで、
+room[user_ids][]をキーに「current_user.id」をコントローラー側へ送信できます。
+この記述の結果、コントローラーに送られるparamsは以下のようになります。
+{"room[user_ids][]" => "選択したユーザーのid, 現在ログインしているユーザーのid"}
+room[user_ids][]に2種類のユーザーidを格納することができました。 %>
