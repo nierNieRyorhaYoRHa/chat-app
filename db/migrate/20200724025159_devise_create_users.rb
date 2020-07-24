@@ -43,9 +43,3 @@ class DeviseCreateUsers < ActiveRecord::Migration[6.0]
     # add_index :users, :unlock_token,         unique: true
   end
 end
-
-
-
-# マイグレーションファイルを開き、t.string :name, null: falseを追記しましょう。
-# この記述により、マイグレーション実行時に「nameカラム」に空の値を許可しないNOT NULL制約で作成されます。
-# 追記が完了したら、マイグレーションを実行しましょう。
