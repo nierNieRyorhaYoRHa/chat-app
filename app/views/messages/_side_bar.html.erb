@@ -13,7 +13,7 @@
   <% current_user.rooms.each do |room| %>
     <div class="room">
       <div class="room-name">
-        <a href="#"><%= room.name%></a>
+        <%= link_to room.name, room_messages_path(room) %>
       </div>
     </div>
   <% end %>
@@ -27,3 +27,10 @@ edit_user	GET	/users/:id/edit(.:format)	users#edit
 link_toのパスを、ログインしているユーザーの編集をするため 、edit_user_path(current_user)と指定します。
 current_user.nameは、ログインしているユーザー名です。
 ユーザー名をクリックすると、usersコントローラーのeditアクションが実行され、編集ページに遷移できます。 %>
+
+
+<%# Prefix	HTTPメソッド	URI	Controller#Action
+room_messages	GET	/rooms/:room_id/messages(.:format)	messages#index
+URIに注目すると、ネストによって、/rooms/:room_id/messagesとなっています。これはメッセージに紐付いているチャットルームのidという意味です。
+サイドバーのチャットルーム名に、 link_to room.name, room_messages_path(room) とリンクを設定します。
+パスにroomを引数とすることで、メッセージと紐付いているチャットルームのidを持たせることができます。%>
