@@ -2,6 +2,7 @@ class MessagesController < ApplicationController
   def index
     @room = Room.find(params[:room_id])
     @message = Message.new
+    @messages = @room.messages.includes(:user)
   end
 
   def create
@@ -39,3 +40,12 @@ end
 # createアクション内に、メッセージを保存できた場合とできなかった場合で条件分岐の処理を行います。
 # @message.saveでメッセージの保存に成功した場合、room_messages_path(@room)
 # （参加しているチャットルームに投稿したメッセージの一覧画面）にリダイレクトし、失敗した場合、indexアクションが実行され、同じページに戻るという記述をします。
+
+# チャットルームに紐付いている全てのメッセージ（@room.messages）を@messagesと定義します。
+# そして、一覧画面で表示するメッセージ情報には、ユーザー情報も紐付いて表示されます。
+# この場合、メッセージに紐付くユーザー情報の取得に、メッセージの数と同じ回数のアクセスが必要になるので、N+1問題が発生します。
+# その場合は、includesメソッドを使用して、解消しましょう。
+# 全てのメッセージ情報に紐づくユーザー情報を、includes(:user)と記述をすることにより、ユーザー情報を1度のアクセスでまとめて取得することができます。
+
+# @messages = @room.messages.includes(:user)は
+# インスタンス変数@messagesに@room(ある特定のroom_idをもつ)にある(紐づく)全てのmessageを入れて、そこにusersテーブルの情報も紐付ける。
