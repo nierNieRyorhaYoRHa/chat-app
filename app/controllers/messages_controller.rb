@@ -49,3 +49,6 @@ end
 
 # @messages = @room.messages.includes(:user)は
 # インスタンス変数@messagesに@room(ある特定のroom_idをもつ)にある(紐づく)全てのmessageを入れて、そこにusersテーブルの情報も紐付ける。
+
+# @room = Room.find(params[:room_id])にはある:room_idに関する全ての情報が入ってる。
+# アソシエーションをおこなっているため、ある:room_idに関する他のテーブルの情報も入っている。
