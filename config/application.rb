@@ -10,6 +10,9 @@ module ChatApp
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
+    config.i18n.default_locale = :ja
+    config.time_zone = 'Tokyo'
+
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
@@ -30,3 +33,5 @@ end
 # 生成したファイルに対応したJavaScriptファイル
 # アプリケーションをテストするためのファイル
 # 今回作成するChatAppでは、必要のないファイルですので、設定を変更して生成しないようにします。config/application.rbを開き、次のように編集しましょう。
+
+# l（エル）メソッドは日付や時刻を表示するメソッドです。国や地域によって時刻は異なりますが、lメソッドを使えば指定した現地時間に対応できます。

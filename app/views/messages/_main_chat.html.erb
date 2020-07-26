@@ -1,59 +1,52 @@
 <div class="chat-header">
   <div class="left-header">
     <div class="header-title">
-      hogefuga
+      <%= @room.name%>
     </div>
   </div>
   <div class="right-header">
     <div class="header-button">
-      <a href="#">チャットを終了する</a>
+      <%= link_to "チャットを終了する", room_path(@room), method: :delete %>
     </div>
   </div>
 
 </div>
 
 <div class="messages">
-  <div class="message">
-    <div class="upper-message">
-      <div class="message-user">
-        Tom
-      </div>
-      <div class="message-date">
-        2020/3/31(Wed) 12:43:30
-      </div>
-    </div>
-    <div class="lower-meesage">
-      <div class="message-content">
-        おはよう
-      </div>
-    </div>
-  </div>
-
-  <div class="message">
-    <div class="upper-message">
-      <div class="message-user">
-        Sim
-      </div>
-      <div class="message-date">
-        2020/3/31(Wed) 12:43:30
-      </div>
-    </div>
-    <div class="lower-meesage">
-      <div class="message-content">
-        こんばんは
-      </div>
-    </div>
-  </div>
+  <%= render partial: 'message', collection: @messages %>
 </div>
 
-<div class="form">
+<%= form_with model: [@room, @message], html: {class: "form"}, local: true do |f|%>
   <div class="form-input">
-    <input class="form-message" placeholder= "type a message">
+    <%= f.text_field :content, class: 'form-message', placeholder: 'type a message' %>
     <label class="form-image">
       <span class="image-file">画像</span>
-      <input type="file" class="hidden">
+      <%= f.file_field :image, class: 'hidden' %>
     </label>
   </div>
-  <input class="form-submit" type="submit" value="送信">
-</div>
+  <%= f.submit '送信', class: 'form-submit' %>
+<% end %>
 
+
+<%# 今回のコードでは、form_withの引数に@room, @messageの2つを渡している点に注意してください。
+これは、messagesのルーティングがroomsにネストされているためです。
+チャットルームとメッセージとの間には、あるチャットルームに属しているメッセージ、という親子関係があります。
+記述したform_withの第1引数@roomには「指定のチャットルームのレコード情報」、
+第2引数@messageには「Messageモデルのからのインスタンス（Message.new）」をあらかじめセットしておく必要があります。
+次に、これらの変数をコントローラーのindexアクションで定義しましょう。 %>
+
+<%# renderメソッド
+renderメソッドは、部分テンプレートを呼び出す際に利用するメソッドです。
+呼び出す部分テンプレートは、partialというオプションで指定します。
+
+partialオプション
+renderメソッドで使用できるオプションです。
+partialというオプションを付け、部分テンプレート名を指定することで、該当する部分テンプレートを表示できます。 %>
+
+<%# collectionオプション
+collectionオプションを使用するとcollectionオプションに指定した変数の要素の分だけ部分テンプレートが繰り返し表示されます。 %>
+
+<%# 「rails routes」コマンドを実行すると、roomコントローラーのdestroyアクションに対応するPrefixは、roomということが分かります。
+したがって、削除のパスはroom_pathとなります。
+削除するチャットルームを区別するために、定義している@roomを引数にし、room_path(@room)と指定しましょう。
+HTTPメソッドのdeleteを指定すると、roomコントローラーのdestroyアクションが実行されます。 %>
