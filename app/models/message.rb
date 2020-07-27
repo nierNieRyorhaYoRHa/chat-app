@@ -7,8 +7,8 @@ class Message < ApplicationRecord
   def was_attached?
     self.image.attached?
   end
-
 end
+
 
 
 
